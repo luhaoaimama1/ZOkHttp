@@ -10,6 +10,22 @@
 ### 未解决的问题
 - [x] cook session 's Keep
 
+# Usage
+
+### Jcenter
+gradle
+
+    compile 'com.zone:zokhttp:1.0.0'
+pom.xml
+
+     <dependency>
+     <groupId>com.zone</groupId>
+     <artifactId>zokhttp</artifactId>
+     <version>1.0.0</version>
+     <type>pom</type>
+     </dependency>
+    
+    
 # Easy use:
 1.get
   
