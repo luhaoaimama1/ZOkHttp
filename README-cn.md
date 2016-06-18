@@ -21,13 +21,13 @@
 ### Jcenter
 gradle
 
-    compile 'com.zone:zokhttp:1.0.0'
+    compile 'com.zone:zokhttp:1.1.0'
 pom.xml
 
      <dependency>
      <groupId>com.zone</groupId>
      <artifactId>zokhttp</artifactId>
-     <version>1.0.0</version>
+     <version>1.1.0</version>
      <type>pom</type>
      </dependency>
     
