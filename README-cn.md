@@ -2,6 +2,9 @@
 
 一个okhttp util
 
+### 声明
+- [x] Cookie 部分是 借鉴  hongyangAndroid 的!!!
+
 ### 已解决的问题
 - [x] GET,POST(文件 json 普通post),PUT,DELETE,HEAD,PATCH的支持
 - [x] 回调的监听都在UI线程 并且有网速计算
@@ -50,13 +53,40 @@ pom.xml
         commonHeaderMap.put("commonHeaderMap", "header_Common");
         Map<String, String> commonHeaderReMap = new HashMap<>();
         commonHeaderReMap.put("commonHeaderMap", "header_CommonReplace");
-         //OkHttpUtils.setClient(OkHttpUtils.Certificates(getAssets().open("srca.cer")).perform());
          //try {
         ok.initConfig(new HttpConfig().setCommonHeaderAddMap(commonHeaderMap)
                         .setCommonHeaderReplaceMap(commonHeaderReMap).setCommonParamsMap(commonParamMap)
+         //                  .hostnameVerifier(new SkirtHttpsHostnameVerifier())//https 跳过检查
          //					.Certificates(CER_12306)
          //					.Certificates(getAssets().open("srca.cer")
         );
+
+5.Tag:注意别直接使用Activity,而是用其类的名字。这样或许可以防止内存泄露。
+
+## 对于Cookie(包含Session)(HongYang 's cookie 文档 )
+
+对于cookie一样，直接通过cookiejar方法配置，参考上面的配置过程。
+
+```
+CookieJarImpl cookieJar = new CookieJarImpl(new PersistentCookieStore(getApplicationContext()));
+OkHttpClient okHttpClient = new OkHttpClient.Builder()
+          .cookieJar(cookieJar)
+          //其他配置
+         .build();
+                 
+OkHttpUtils.initClient(okHttpClient);
+```
+目前项目中包含：
+
+* PersistentCookieStore //持久化cookie
+* SerializableHttpCookie //持久化cookie
+* MemoryCookieStore //cookie信息存在内存中
+
+如果遇到问题，欢迎反馈，当然也可以自己实现CookieJar接口，编写cookie管理相关代码。
+
+此外，对于持久化cookie还可以使用[https://github.com/franmontiel/PersistentCookieJar](https://github.com/franmontiel/PersistentCookieJar).
+
+相当于框架中只是提供了几个实现类，你可以自行定制或者选择使用。
 
 
 # Reference&Thanks：

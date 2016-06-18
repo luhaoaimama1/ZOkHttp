@@ -128,6 +128,7 @@ public class ok {//At that time z.ok () is the network to learn xutils I feel I 
     }
 
 
+    //Take care:not use Activity  , should be use this Class Name .to stop memory leakage;
     public static void cancelTag(Object tag) {
         for (Call call : client.dispatcher().queuedCalls()) {
             if (tag.equals(call.request().tag()))

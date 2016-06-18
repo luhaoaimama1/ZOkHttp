@@ -20,6 +20,7 @@ import android.app.Application;
 import android.os.Build;
 import android.os.StrictMode;
 import com.zone.okhttp.HttpConfig;
+import com.zone.okhttp.https.SkirtHttpsHostnameVerifier;
 import com.zone.okhttp.ok;
 import java.util.HashMap;
 import java.util.Map;
@@ -60,11 +61,11 @@ public class Apps extends Application {
         commonHeaderMap.put("commonHeaderMap", "header_Common");
         Map<String, String> commonHeaderReMap = new HashMap<>();
         commonHeaderReMap.put("commonHeaderMap", "header_CommonReplace");
-//			OkHttpUtils.setClient(OkHttpUtils.Certificates(getAssets().open("srca.cer")).perform());
 //		try {
         ok.initConfig(new HttpConfig().setCommonHeaderAddMap(commonHeaderMap)
                         .setCommonHeaderReplaceMap(commonHeaderReMap).setCommonParamsMap(commonParamMap)
-//					.Certificates(CER_12306)
+//                    .hostnameVerifier(new SkirtHttpsHostnameVerifier())//https跳过检测
+					.Certificates(CER_12306)
 //					.Certificates(getAssets().open("srca.cer")
         );
 //		} catch (IOException e) {

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.zone.okhttp.RequestParams;
 import com.zone.okhttp.callback.SimpleProgressCallback;
 import com.zone.okhttp.ok;
@@ -78,8 +79,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             super.onSuccess(result, call, response);
             System.out.println("onSuccess result>>" + result);
             Gson g=new Gson();
-            Data data= g.fromJson(result,Data.class);
-            System.out.println("code:"+data.getCode());
+            Data data= null;
+            try {
+                data = g.fromJson(result,Data.class);
+                System.out.println("code:"+data.getCode());
+            } catch (JsonSyntaxException e) {
+            }
+
         }
 
         @Override
