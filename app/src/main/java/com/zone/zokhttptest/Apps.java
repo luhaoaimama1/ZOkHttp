@@ -24,8 +24,14 @@ import com.zone.okhttp.cookie.CookieJarImpl;
 import com.zone.okhttp.cookie.store.PersistentCookieStore;
 import com.zone.okhttp.https.SkirtHttpsHostnameVerifier;
 import com.zone.okhttp.ok;
+
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+
+import okhttp3.Interceptor;
+import okhttp3.Response;
+
 /**
  * @author Sergey Tarasevich (nostra13[at]gmail[dot]com)
  */
@@ -67,6 +73,19 @@ public class Apps extends Application {
 //		try {
         ok.initConfig(new HttpConfig().setCommonHeaderAddMap(commonHeaderMap)
                         .setCommonHeaderReplaceMap(commonHeaderReMap).setCommonParamsMap(commonParamMap)
+                        .addNetworkInterceptor(new Interceptor() {
+                            @Override
+                            public Response intercept(Chain chain) throws IOException {
+                                return null;
+                            }
+                        })
+                        .addInterceptor(new Interceptor() {
+                            @Override
+                            public Response intercept(Chain chain) throws IOException {
+                                System.out.println();
+                                return null;
+                            }
+                        })
                         .cookieJar(cookieJar)//cookieJar
 //                      .hostnameVerifier(new SkirtHttpsHostnameVerifier())//https跳过检测
                         .Certificates(CER_12306)

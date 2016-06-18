@@ -12,6 +12,7 @@ import java.util.concurrent.TimeUnit;
 import javax.net.ssl.HostnameVerifier;
 
 import okhttp3.CookieJar;
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okio.Buffer;
 /**
@@ -59,13 +60,25 @@ public class HttpConfig {
         return this;
     }
 
+    public HttpConfig  addInterceptor(Interceptor interceptor){
+        clientBuilder.addInterceptor(interceptor);
+        return this;
+    }
+    public HttpConfig  addNetworkInterceptor(Interceptor interceptor){
+        clientBuilder.addNetworkInterceptor(interceptor);
+        return this;
+    }
+
     public HttpConfig cookieJar(CookieJar cookieJar){
         clientBuilder.cookieJar(cookieJar);
         return this;
     }
 
+    public OkHttpClient.Builder getClientBuilder() {
+        return clientBuilder;
+    }
 
-     OkHttpClient build(){
+    OkHttpClient build(){
         return clientBuilder.build();
     }
 
