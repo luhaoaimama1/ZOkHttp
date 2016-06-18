@@ -1,26 +1,29 @@
 package com.zone.zokhttptest;
+
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ProgressBar;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.zone.okhttp.RequestParams;
 import com.zone.okhttp.callback.SimpleProgressCallback;
 import com.zone.okhttp.ok;
 import com.zone.zokhttptest.entity.Data;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import butterknife.Bind;
+
 import butterknife.ButterKnife;
 import okhttp3.Call;
 import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    public static final String UrlPath="http://101.39.62.207:8089/Test/log";
+    public static final String UrlPath = "http://101.39.62.207:8089/Test/log";
     Map<String, Object> map = new HashMap<String, Object>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         okHttp(v);
     }
+
     private void okHttp(View v) {
         switch (v.getId()) {
             case R.id.bt_okGet:
@@ -44,7 +48,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         .put("name", "bug").put("subject", 123 + ""), okListener).tag(this).executeSync();
                 break;
             case R.id.bt_Https:
-                ok.get("https://kyfw.12306.cn/otn/", okListener).tag(this).executeSync();
+//                ok.get("https://kyfw.12306.cn/otn/", okListener).tag(this).executeSync();
+                File a = FileUtils.getFile("DCIM", "Camera", "360.exe");
+                delete(a);
                 break;
 
             case R.id.bt_okUpload:
@@ -54,10 +60,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 ok.post(UrlPath, new RequestParams().put("String_uid", "love")
                         .put("mFile", f).put("subject", "1327.jpg", f2), okListener).tag(this).executeSync();
                 break;
+            case R.id.bt_downLoad:
+                ok.downLoad("http://down.360safe.com/360/inst.exe", FileUtils.getFile("DCIM", "Camera","360.exe"), okListener).tag(this).executeSync();
+                break;
             default:
                 break;
         }
     }
+
+    public void delete(File b) {
+        if (b.exists()) {
+            System.out.println("path:"+b.getAbsolutePath()+"删除成功："+b.delete());
+        }else{
+            System.out.println("path:"+b.getAbsolutePath()+"不存在~");
+        }
+    }
+
     SimpleProgressCallback okListener = new SimpleProgressCallback() {
 
         @Override
@@ -67,10 +85,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         @Override
-        public void onLoading(long total, long current, long networkSpeed, boolean isDownloading) {
-            super.onLoading(total, current, networkSpeed, isDownloading);
+        public void onLoading(long total, long current, long networkSpeed, boolean isDone) {
+            super.onLoading(total, current, networkSpeed, isDone);
             System.out.println(" progress" + ((int) (current * 100 / total)) + "  \t networkSpeed:" + networkSpeed +
-                    "  \t total:" + total + " \t current:" + current + " \t isDownloading:" + isDownloading + "");
+                    "  \t total:" + total + " \t current:" + current + " \t isDone:" + isDone + "");
 //            tvOkHttp.setText("progress:"+mLoadingParams.progress);
         }
 
@@ -78,11 +96,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         public void onSuccess(String result, Call call, Response response) {
             super.onSuccess(result, call, response);
             System.out.println("onSuccess result>>" + result);
-            Gson g=new Gson();
-            Data data= null;
+            Gson g = new Gson();
             try {
-                data = g.fromJson(result,Data.class);
-                System.out.println("code:"+data.getCode());
+                Data data = g.fromJson(result, Data.class);
+                System.out.println("code:" + data.getCode());
             } catch (JsonSyntaxException e) {
             }
 
@@ -92,6 +109,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         public void onStart() {
             super.onStart();
             System.out.println("OkHttpSimpleListener  onStart>>");
+        }
+
+        @Override
+        public void onFinished() {
+            super.onFinished();
+            System.out.println("onFinished");
         }
     };
 

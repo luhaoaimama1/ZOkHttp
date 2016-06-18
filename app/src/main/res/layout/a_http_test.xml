@@ -38,5 +38,13 @@
         android:onClick="onClick"
         android:text="12306Https" />
 
+    <Button
+        android:id="@+id/bt_downLoad"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        android:onClick="onClick"
+        android:text="简单的文件下载" />
+
 </LinearLayout>
 

@@ -54,7 +54,6 @@ public class ProgressRequestBody extends RequestBody{
     public ProgressRequestBody(RequestBody requestBody, Callback.ProgressCallback mProgressCallback) {
         this.requestBody = requestBody;
         this.mProgressCallback=mProgressCallback;
-//        this.progressListener = progressListener;
         mLoadingParams=new LoadingParams();
     }
 

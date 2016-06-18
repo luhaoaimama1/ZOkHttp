@@ -11,9 +11,10 @@
 - [x] 文件上传的时候 直接put文件即可
 - [x] 可以设置全局请求参数
 - [x] 支持https
+- [x] 支持cookie
+- [x] 简单的文件下载
 
 ### 未解决的问题
-- [x] cook session 's Keep
 
 # Usage
 
@@ -44,7 +45,8 @@ pom.xml
 
     ok.post(UrlPath, new RequestParams().put("String_uid", "love")
                         .put("mFile", f).put("subject", "1327.jpg", f2), okListener).tag(this).executeSync();
-4.全局配置
+
+4.全局配置  包含 https  和cookie的例子
       
          //try {
         Map<String, String> commonParamMap = new HashMap<>();
@@ -56,6 +58,7 @@ pom.xml
          //try {
         ok.initConfig(new HttpConfig().setCommonHeaderAddMap(commonHeaderMap)
                         .setCommonHeaderReplaceMap(commonHeaderReMap).setCommonParamsMap(commonParamMap)
+                        .cookieJar(cookieJar)//cookie 的例子
          //                  .hostnameVerifier(new SkirtHttpsHostnameVerifier())//https 跳过检查
          //					.Certificates(CER_12306)
          //					.Certificates(getAssets().open("srca.cer")
@@ -63,19 +66,12 @@ pom.xml
 
 5.Tag:注意别直接使用Activity,而是用其类的名字。这样或许可以防止内存泄露。
 
+6.Download : Take care :if taget is Folder name  from url,else  target is file. name is target;
+
+         ok.downLoad("http://down.360safe.com/360/inst.exe", FileUtils.getFile("DCIM", "Camera","360.exe"), okListener).tag(this).executeSync();
+
 ## 对于Cookie(包含Session)(HongYang 's cookie 文档 )
 
-对于cookie一样，直接通过cookiejar方法配置，参考上面的配置过程。
-
-```
-CookieJarImpl cookieJar = new CookieJarImpl(new PersistentCookieStore(getApplicationContext()));
-OkHttpClient okHttpClient = new OkHttpClient.Builder()
-          .cookieJar(cookieJar)
-          //其他配置
-         .build();
-                 
-OkHttpUtils.initClient(okHttpClient);
-```
 目前项目中包含：
 
 * PersistentCookieStore //持久化cookie

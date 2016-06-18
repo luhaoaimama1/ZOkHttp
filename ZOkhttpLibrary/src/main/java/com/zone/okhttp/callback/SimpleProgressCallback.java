@@ -5,7 +5,7 @@ package com.zone.okhttp.callback;
  */
 public class SimpleProgressCallback extends SimpleCommonCallback implements Callback.ProgressCallback {
     @Override
-    public void onLoading(long total, long current, long networkSpeed, boolean isDownloading) {
+    public void onLoading(long total, long current, long networkSpeed, boolean isDone) {
 
     }
 }

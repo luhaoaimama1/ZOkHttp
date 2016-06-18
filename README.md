@@ -13,9 +13,9 @@ a okhttp util
 - [x] Files can be uploaded directly to the put file 
 - [x] Global request parameters can be set 
 - [x] support https
-
+- [x] support cookie
+- [x] support easy download 
 ###  Unsolved problems 
-- [x] cook session 's Keep
 
 # Usage
 
@@ -46,7 +46,7 @@ pom.xml
 
     ok.post(UrlPath, new RequestParams().put("String_uid", "love")
                         .put("mFile", f).put("subject", "1327.jpg", f2), okListener).tag(this).executeSync();
-4.Global configuration contain Https
+4.Global configuration contain Https and cookie.
       
          //try {
         Map<String, String> commonParamMap = new HashMap<>();
@@ -58,6 +58,7 @@ pom.xml
          //try {
         ok.initConfig(new HttpConfig().setCommonHeaderAddMap(commonHeaderMap)
                         .setCommonHeaderReplaceMap(commonHeaderReMap).setCommonParamsMap(commonParamMap)
+                          .cookieJar(cookieJar)//cookie example
          //                  .hostnameVerifier(new SkirtHttpsHostnameVerifier())//https skirt check
          //					.Certificates(CER_12306)
          //					.Certificates(getAssets().open("srca.cer")
@@ -66,18 +67,11 @@ pom.xml
 
 5.Tag:Take care:not use Activity  , should be use this Class Name .maybe stop memory leakage;
 
-## Cookie(contain Session)(HongYang 's cookie Document)
+6.下载的例子  注意如果第二个是 文件夹  则target name 来自url 此例为inst.exe   如果第二个是文件 则target 为该文件
 
-For cookie, like, directly through the cookiejar method configuration, refer to the above configuration process. 
-```
-CookieJarImpl cookieJar = new CookieJarImpl(new PersistentCookieStore(getApplicationContext()));
-OkHttpClient okHttpClient = new OkHttpClient.Builder()
-          .cookieJar(cookieJar)
-          //other config
-         .build();
-                 
-OkHttpUtils.initClient(okHttpClient);
-```
+         ok.downLoad("http://down.360safe.com/360/inst.exe", FileUtils.getFile("DCIM", "Camera","360.exe"), okListener).tag(this).executeSync();
+        
+## Cookie(contain Session)(HongYang 's cookie Document)
 Current projects include: 
 
 * PersistentCookieStore //Persistent  cookie

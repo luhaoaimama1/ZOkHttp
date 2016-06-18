@@ -127,6 +127,23 @@ public class ok {//At that time z.ok () is the network to learn xutils I feel I 
         return Helper.setHttpType(HttpType.POST.postJson(), urlString, requestParams, listener);
     }
 
+    //-----------------------------download easy-----------------------
+    //if taget is Folder name  from url,else  target is file. name is target;
+    public static RequestBuilderProxy downLoad(String urlString, File target) {
+        return downLoad(urlString, null, target,null);
+    }
+    //if taget is Folder name  from url,else  target is file. name is target;
+    public static RequestBuilderProxy downLoad(String urlString, File target, Callback.CommonCallback listener) {
+        return downLoad(urlString, null, target,listener);
+    }
+    //if taget is Folder name  from url,else  target is file. name is target;
+    public static RequestBuilderProxy downLoad(String urlString, RequestParams requestParams,File target) {
+        return downLoad(urlString, requestParams,target, null);
+    }
+    //if taget is Folder name  from url,else  target is file. name is target;
+    public static RequestBuilderProxy downLoad(String urlString, RequestParams requestParams,File target, Callback.CommonCallback listener) {
+        return Helper.setHttpType(HttpType.GET.isDownLoad(target), urlString, requestParams, listener);
+    }
 
     //Take care:not use Activity  , should be use this Class Name .to stop memory leakage;
     public static void cancelTag(Object tag) {
@@ -182,6 +199,7 @@ public class ok {//At that time z.ok () is the network to learn xutils I feel I 
         private static RequestBuilderProxy requestCon(String urlString, RequestParams requestParams, Callback.CommonCallback listener) {
             RequestBuilderProxy request = new RequestBuilderProxy();
             request.setmOkHttpListener(listener);
+            request.setRequestParams(requestParams);
             initCommonHeader(request, requestParams);
             switch (requestParams.getmHttpType()) {
                 case GET:

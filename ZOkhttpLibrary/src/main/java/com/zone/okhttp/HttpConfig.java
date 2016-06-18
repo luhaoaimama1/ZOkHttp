@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import javax.net.ssl.HostnameVerifier;
+
+import okhttp3.CookieJar;
 import okhttp3.OkHttpClient;
 import okio.Buffer;
 /**
@@ -17,6 +19,8 @@ import okio.Buffer;
  *To see the configuration parameters of the time required  {@link ok .getClient()}
  */
 public class HttpConfig {
+
+
     //The default value is clientbuilder
     private OkHttpClient.Builder clientBuilder;
     private  String encoding = "utf-8";
@@ -55,6 +59,10 @@ public class HttpConfig {
         return this;
     }
 
+    public HttpConfig cookieJar(CookieJar cookieJar){
+        clientBuilder.cookieJar(cookieJar);
+        return this;
+    }
 
 
      OkHttpClient build(){

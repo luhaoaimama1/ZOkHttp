@@ -1,5 +1,7 @@
 package com.zone.okhttp.wrapper;
+import com.zone.okhttp.RequestParams;
 import com.zone.okhttp.ok;
+import com.zone.okhttp.utils.DownLoadUtils;
 import com.zone.okhttp.utils.MainHandlerUtils;
 
 import java.io.IOException;
@@ -17,6 +19,8 @@ import okhttp3.Response;
  */
 public class RequestBuilderProxy extends Request.Builder {
     private com.zone.okhttp.callback.Callback.CommonCallback mOkHttpListener;
+    private RequestParams requestParams;
+
     public RequestBuilderProxy() {
         super();
     }
@@ -129,7 +133,7 @@ public class RequestBuilderProxy extends Request.Builder {
         return super.build();
     }
 
-    //not Sync
+    //todo  listener not have is OK?I don't know!
     public Response execute() {
         Call call = ok.getClient().newCall(this.build());
         Response temp = null;
@@ -158,10 +162,21 @@ public class RequestBuilderProxy extends Request.Builder {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 if (mOkHttpListener != null) {
-                    String result = response.body().string();
-                    MainHandlerUtils.onResponse(mOkHttpListener, call, response, result);
+                    if(requestParams.getmHttpType().isDownLoad){
+                        if(mOkHttpListener instanceof com.zone.okhttp.callback.Callback.ProgressCallback)
+                            DownLoadUtils.saveFile((com.zone.okhttp.callback.Callback.ProgressCallback)
+                                    mOkHttpListener,response,requestParams.getmHttpType().target);
+                        else
+                            DownLoadUtils.saveFile(null,response,requestParams.getmHttpType().target);
+
+                    }else{
+                        String result = response.body().string();
+                        MainHandlerUtils.onResponse(mOkHttpListener, call, response, result);
+                    }
                     MainHandlerUtils.onFinished(mOkHttpListener);
-                }
+                }else
+                    if(requestParams.getmHttpType().isDownLoad)
+                        DownLoadUtils.saveFile(null,response,requestParams.getmHttpType().target);
             }
         });
         return call;
@@ -176,4 +191,13 @@ public class RequestBuilderProxy extends Request.Builder {
     public void setmOkHttpListener(com.zone.okhttp.callback.Callback.CommonCallback mOkHttpListener) {
         this.mOkHttpListener = mOkHttpListener;
     }
+
+    public RequestParams getRequestParams() {
+        return requestParams;
+    }
+
+    public void setRequestParams(RequestParams requestParams) {
+        this.requestParams = requestParams;
+    }
+
 }
