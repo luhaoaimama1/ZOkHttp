@@ -153,7 +153,7 @@ public class RequestParams {
         return mHttpType;
     }
 
-    public RequestParams setmHttpType(HttpType mHttpType) {
+    protected RequestParams setmHttpType(HttpType mHttpType) {
         this.mHttpType = mHttpType;
         return this;
     }
@@ -176,7 +176,7 @@ public class RequestParams {
 
     private boolean isDownLoad;
     private File target;
-    public RequestParams isDownLoad(File target){
+    protected RequestParams isDownLoad(File target){
         isDownLoad=true;
         this.target=target;
         return this;
@@ -197,7 +197,7 @@ public class RequestParams {
         return isPostJson;
     }
 
-    public void setPostJson(boolean postJson) {
+    protected void setPostJson(boolean postJson) {
         isPostJson = postJson;
     }
 }
