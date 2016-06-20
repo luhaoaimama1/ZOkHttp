@@ -1,4 +1,5 @@
 package com.zone.okhttp;
+
 import com.zone.okhttp.entity.HttpType;
 import com.zone.okhttp.utils.StringUtils;
 
@@ -22,6 +23,7 @@ public class RequestParams {
     protected String jsonStr;
     protected String encoding;
 
+
     public RequestParams() {
         initCommon();
     }
@@ -33,11 +35,12 @@ public class RequestParams {
         setHeaderAddMap(ok.getHttpConfig().getCommonHeaderAddMap());
         //Finally put the head
         setHeaderReplaceMap(ok.getHttpConfig().getCommonHeaderReplaceMap());
-        if(StringUtils.isEmptyTrim(encoding))
+        if (StringUtils.isEmptyTrim(encoding))
             headsReplace("charset", ok.getHttpConfig().getEncoding());
         else
             headsReplace("charset", encoding);
     }
+
 
     public String getJsonStr() {
         return jsonStr;
@@ -47,7 +50,7 @@ public class RequestParams {
         this.jsonStr = jsonStr;
     }
 
-    private void file2NameMapChecked(){
+    private void file2NameMapChecked() {
         if (fileMap == null)
             fileMap = new ConcurrentHashMap<>();
         if (fileNameMap == null)
@@ -55,7 +58,7 @@ public class RequestParams {
     }
 
     public RequestParams put(String key, File file) {
-        return  put(key,null,file);
+        return put(key, null, file);
     }
 
     public RequestParams put(String key, String value, File file) {
@@ -64,44 +67,50 @@ public class RequestParams {
         fileNameMap.put(key, value == null ? file.getName() : value);
         return this;
     }
+
     public RequestParams setFileMap(Map<String, File> fileMap) {
         file2NameMapChecked();
         this.fileMap.putAll(fileMap);
         for (Map.Entry<String, File> stringFileEntry : fileMap.entrySet())
-            fileNameMap.put(stringFileEntry.getKey(),stringFileEntry.getValue().getName());
+            fileNameMap.put(stringFileEntry.getKey(), stringFileEntry.getValue().getName());
         return this;
     }
+
     public Map<String, File> getFileMap() {
         return fileMap;
     }
+
     public Map<String, String> getFileNameMap() {
         return fileNameMap;
     }
 
-    private void paramsMapChecked(){
+    private void paramsMapChecked() {
         if (paramsMap == null)
             paramsMap = new ConcurrentHashMap<>();
     }
+
     public RequestParams put(String key, String value) {
         paramsMapChecked();
         paramsMap.put(key, value);
         return this;
     }
+
     public RequestParams setParamsMap(Map<String, String> paramsMap) {
         paramsMapChecked();
         this.paramsMap.putAll(paramsMap);
         return this;
     }
+
     public Map<String, String> getParamsMap() {
         return paramsMap;
     }
 
 
-
-    private void headerReplaceMapChecked(){
+    private void headerReplaceMapChecked() {
         if (headerReplaceMap == null)
             headerReplaceMap = new ConcurrentHashMap<>();
     }
+
     public RequestParams headsReplace(String key, String value) {
         headerReplaceMapChecked();
         headerReplaceMap.put(key, String.valueOf(value));
@@ -113,13 +122,16 @@ public class RequestParams {
         this.headerReplaceMap.putAll(headerReplaceMap);
         return this;
     }
+
     public Map<String, String> getHeaderReplaceMap() {
         return headerReplaceMap;
     }
-    private void  headerAddMapChecked(){
+
+    private void headerAddMapChecked() {
         if (headerAddMap == null)
             headerAddMap = new ConcurrentHashMap<>();
     }
+
     public RequestParams headsAdd(String key, String value) {
         headerAddMapChecked();
         headerAddMap.put(key, String.valueOf(value));
@@ -131,6 +143,7 @@ public class RequestParams {
         this.headerAddMap.putAll(headerAddMap);
         return this;
     }
+
     public Map<String, String> getHeaderAddMap() {
         return headerAddMap;
     }
@@ -145,14 +158,14 @@ public class RequestParams {
         return this;
     }
 
-    public  String getEncoding() {
+    public String getEncoding() {
         return encoding;
     }
 
     public RequestParams setEncoding(String encoding) {
         if (!StringUtils.isEmptyTrim(encoding)) {
             Charset charset = Charset.forName(encoding);
-            if (charset!=null) {
+            if (charset != null) {
                 this.encoding = encoding;
             }
             return this;
@@ -161,4 +174,30 @@ public class RequestParams {
     }
 
 
+    private boolean isDownLoad;
+    private File target;
+    public RequestParams isDownLoad(File target){
+        isDownLoad=true;
+        this.target=target;
+        return this;
+    }
+
+    public boolean isDownLoad() {
+        return isDownLoad;
+    }
+
+
+    public File getTarget() {
+        return target;
+    }
+
+    private boolean isPostJson;
+
+    public boolean isPostJson() {
+        return isPostJson;
+    }
+
+    public void setPostJson(boolean postJson) {
+        isPostJson = postJson;
+    }
 }

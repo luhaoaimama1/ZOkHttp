@@ -162,12 +162,12 @@ public class RequestBuilderProxy extends Request.Builder {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 if (mOkHttpListener != null) {
-                    if(requestParams.getmHttpType().isDownLoad){
+                    if(requestParams.isDownLoad()){
                         if(mOkHttpListener instanceof com.zone.okhttp.callback.Callback.ProgressCallback)
                             DownLoadUtils.saveFile((com.zone.okhttp.callback.Callback.ProgressCallback)
-                                    mOkHttpListener,response,requestParams.getmHttpType().target);
+                                    mOkHttpListener,response,requestParams.getTarget());
                         else
-                            DownLoadUtils.saveFile(null,response,requestParams.getmHttpType().target);
+                            DownLoadUtils.saveFile(null,response,requestParams.getTarget());
 
                     }else{
                         String result = response.body().string();
@@ -175,8 +175,8 @@ public class RequestBuilderProxy extends Request.Builder {
                     }
                     MainHandlerUtils.onFinished(mOkHttpListener);
                 }else
-                    if(requestParams.getmHttpType().isDownLoad)
-                        DownLoadUtils.saveFile(null,response,requestParams.getmHttpType().target);
+                    if(requestParams.isDownLoad())
+                        DownLoadUtils.saveFile(null,response,requestParams.getTarget());
             }
         });
         return call;

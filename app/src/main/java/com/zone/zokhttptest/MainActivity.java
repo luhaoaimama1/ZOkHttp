@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.bt_Https:
 //                ok.get("https://kyfw.12306.cn/otn/", okListener).tag(this).executeSync();
-                File a = FileUtils.getFile("DCIM", "Camera", "360.exe");
+                File a = FileUtils.getFile("", "360.exe");
                 delete(a);
                 break;
 
@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         .put("mFile", f).put("subject", "1327.jpg", f2), okListener).tag(this).executeSync();
                 break;
             case R.id.bt_downLoad:
-                ok.downLoad("http://down.360safe.com/360/inst.exe", FileUtils.getFile("DCIM", "Camera","360.exe"), okListener).tag(this).executeSync();
+                ok.downLoad("http://down.360safe.com/360/inst.exe", FileUtils.getFile("","360.exe"), okListener).tag(this).executeSync();
                 break;
             default:
                 break;

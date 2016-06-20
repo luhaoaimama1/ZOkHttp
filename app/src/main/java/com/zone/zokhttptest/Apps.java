@@ -73,19 +73,19 @@ public class Apps extends Application {
 //		try {
         ok.initConfig(new HttpConfig().setCommonHeaderAddMap(commonHeaderMap)
                         .setCommonHeaderReplaceMap(commonHeaderReMap).setCommonParamsMap(commonParamMap)
-                        .addNetworkInterceptor(new Interceptor() {
-                            @Override
-                            public Response intercept(Chain chain) throws IOException {
-                                return null;
-                            }
-                        })
-                        .addInterceptor(new Interceptor() {
-                            @Override
-                            public Response intercept(Chain chain) throws IOException {
-                                System.out.println();
-                                return null;
-                            }
-                        })
+//                        .addNetworkInterceptor(new Interceptor() {
+//                            @Override
+//                            public Response intercept(Chain chain) throws IOException {
+//                                return null;
+//                            }
+//                        })
+//                        .addInterceptor(new Interceptor() {
+//                            @Override
+//                            public Response intercept(Chain chain) throws IOException {
+//                                System.out.println();
+//                                return null;
+//                            }
+//                        })
                         .cookieJar(cookieJar)//cookieJar
 //                      .hostnameVerifier(new SkirtHttpsHostnameVerifier())//https跳过检测
                         .Certificates(CER_12306)

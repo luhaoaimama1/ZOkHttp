@@ -124,7 +124,10 @@ public class ok {//At that time z.ok () is the network to learn xutils I feel I 
     }
 
     public static RequestBuilderProxy postJson(String urlString, RequestParams requestParams, Callback.CommonCallback listener) {
-        return Helper.setHttpType(HttpType.POST.postJson(), urlString, requestParams, listener);
+        if(requestParams==null)
+            requestParams=new RequestParams();
+        requestParams.setPostJson(true);
+        return Helper.setHttpType(HttpType.POST, urlString, requestParams, listener);
     }
 
     //-----------------------------download easy-----------------------
@@ -142,7 +145,10 @@ public class ok {//At that time z.ok () is the network to learn xutils I feel I 
     }
     //if taget is Folder name  from url,else  target is file. name is target;
     public static RequestBuilderProxy downLoad(String urlString, RequestParams requestParams,File target, Callback.CommonCallback listener) {
-        return Helper.setHttpType(HttpType.GET.isDownLoad(target), urlString, requestParams, listener);
+        if(requestParams==null)
+            requestParams=new RequestParams();
+        requestParams.isDownLoad(target);
+        return Helper.setHttpType(HttpType.GET, urlString, requestParams, listener);
     }
 
     //Take care:not use Activity  , should be use this Class Name .to stop memory leakage;
@@ -175,6 +181,8 @@ public class ok {//At that time z.ok () is the network to learn xutils I feel I 
     }
 
     final static class Helper {
+        ;
+
         //--------------------------------------------------Internal tools -------------------------------------------------------
         private static RequestBuilderProxy setHttpType(HttpType httpType, String urlString, RequestParams requestParams, Callback.CommonCallback listener) {
             if (requestParams == null)
@@ -182,8 +190,6 @@ public class ok {//At that time z.ok () is the network to learn xutils I feel I 
             requestParams.setmHttpType(httpType);
             return requestCon(urlString, requestParams, listener);
         }
-
-        ;
 
         //init head
         private static RequestBuilderProxy initCommonHeader(RequestBuilderProxy request, RequestParams requestParams) {
@@ -213,7 +219,7 @@ public class ok {//At that time z.ok () is the network to learn xutils I feel I 
                     request.url(getUrlCon(urlString, requestParams)).delete();
                     break;
                 case POST:
-                    if (requestParams.getmHttpType().postType!= HttpType.PostType.JSON)
+                    if (!requestParams.isPostJson())
                         //normal
                         request.url(urlString).post(createRequestBody(requestParams, listener));
                     else{
