@@ -176,9 +176,10 @@ public class RequestParams {
 
     private boolean isDownLoad;
     private File target;
-    protected RequestParams isDownLoad(File target){
-        isDownLoad=true;
-        this.target=target;
+
+    protected RequestParams isDownLoad(File target) {
+        isDownLoad = true;
+        this.target = target;
         return this;
     }
 
