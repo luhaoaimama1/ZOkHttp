@@ -7,7 +7,7 @@
 
 ### 已解决的问题
 - [x] GET,POST(文件 json 普通post),PUT,DELETE,HEAD,PATCH的支持
-- [x] 回调的监听都在UI线程 并且有网速计算
+- [x] 回调的监听都在UI线程(或者后台线程) 并且有网速计算
 - [x] 文件上传的时候 直接put文件即可
 - [x] 可以设置全局请求参数
 - [x] 支持https
@@ -21,7 +21,7 @@
 ### Jcenter
 gradle
 
-    compile 'com.zone:zokhttp:1.1.0'
+    compile 'com.zone:zokhttp:1.1.2'
 pom.xml
 
      <dependency>
@@ -84,6 +84,12 @@ pom.xml
 
 相当于框架中只是提供了几个实现类，你可以自行定制或者选择使用。
 
+#更改日志:
+版本 1.1.1, 添加了 切换后台线程处理回调的模式 ;但是onload回调 一直都是主线程,其他回调则依靠你的模式设置;
+
+      ok.get("http://www.baidu.com", okListener).tag(this)
+                            .backgroundThread()
+                            .tag(this).executeSync();
 
 # Reference&Thanks：
 

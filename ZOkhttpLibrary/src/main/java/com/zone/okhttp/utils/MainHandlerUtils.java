@@ -1,7 +1,14 @@
 package com.zone.okhttp.utils;
 
+import android.annotation.TargetApi;
+import android.os.AsyncTask;
+import android.os.Build;
+
+import com.zone.okhttp.entity.ThreadMode;
 import com.zone.okhttp.ok;
 import com.zone.okhttp.callback.Callback;
+import com.zone.okhttp.wrapper.RequestBuilderProxy;
+
 import java.io.IOException;
 import okhttp3.Call;
 import okhttp3.Response;
@@ -10,17 +17,27 @@ import okhttp3.Response;
  * Created by Zone on 2016/3/17.
  */
 public class MainHandlerUtils {
-    public static void onStart(final Callback.CommonCallback listener) {
-        ok.getmHandler().post(new Runnable() {
+
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    public static void onStart(final Callback.CommonCallback listener, ThreadMode threadMode) {
+        handleThreadMode(threadMode,new Runnable() {
             @Override
             public void run() {
                 listener.onStart();
             }
         });
     }
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    private static void handleThreadMode(ThreadMode threadMode, Runnable runable){
+        if (threadMode== ThreadMode.MAIN) {
+            ok.getmHandler().post(runable);
+        }else{
+            AsyncTask.THREAD_POOL_EXECUTOR.execute(runable);
+        }
+    }
 
-    public static void onFailure(final Callback.CommonCallback listener, final Call call, final IOException e) {
-        ok.getmHandler().post(new Runnable() {
+    public static void onFailure(final Callback.CommonCallback listener, final Call call, final IOException e, ThreadMode threadMode) {
+        handleThreadMode(threadMode,new Runnable() {
             @Override
             public void run() {
                 listener.onError(call, e);
@@ -28,8 +45,8 @@ public class MainHandlerUtils {
         });
     }
 
-    public static void onFinished(final Callback.CommonCallback listener) {
-        ok.getmHandler().post(new Runnable() {
+    public static void onFinished(final Callback.CommonCallback listener, ThreadMode threadMode) {
+        handleThreadMode(threadMode,new Runnable() {
             @Override
             public void run() {
                 listener.onFinished();
@@ -37,8 +54,8 @@ public class MainHandlerUtils {
         });
     }
 
-    public static void onResponse(final Callback.CommonCallback listener, final Call call, final Response response, final String result) {
-        ok.getmHandler().post(new Runnable() {
+    public static void onResponse(final Callback.CommonCallback listener, final Call call, final Response response, final String result, ThreadMode threadMode) {
+        handleThreadMode(threadMode,new Runnable() {
             @Override
             public void run() {
                 listener.onSuccess(result, call, response);

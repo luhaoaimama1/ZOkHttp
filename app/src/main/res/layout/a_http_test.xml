@@ -15,12 +15,21 @@
         android:text="get" />
 
     <Button
+        android:id="@+id/bt_okPost_Bg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        android:onClick="onClick"
+        android:text="get后台线程" />
+
+    <Button
         android:id="@+id/bt_okPost"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
         android:onClick="onClick"
         android:text="post" />
+
 
     <Button
         android:id="@+id/bt_okUpload"

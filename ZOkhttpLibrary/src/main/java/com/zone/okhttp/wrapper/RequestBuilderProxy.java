@@ -1,5 +1,6 @@
 package com.zone.okhttp.wrapper;
 import com.zone.okhttp.RequestParams;
+import com.zone.okhttp.entity.ThreadMode;
 import com.zone.okhttp.ok;
 import com.zone.okhttp.utils.DownLoadUtils;
 import com.zone.okhttp.utils.MainHandlerUtils;
@@ -20,6 +21,7 @@ import okhttp3.Response;
 public class RequestBuilderProxy extends Request.Builder {
     private com.zone.okhttp.callback.Callback.CommonCallback mOkHttpListener;
     private RequestParams requestParams;
+    private ThreadMode threadMode=ThreadMode.MAIN;
 
     public RequestBuilderProxy() {
         super();
@@ -133,8 +135,9 @@ public class RequestBuilderProxy extends Request.Builder {
         return super.build();
     }
 
-    //todo  listener not have is OK?I don't know!
     public Response execute() {
+        if(mOkHttpListener!=null)
+            throw new IllegalStateException("method:execute is not Sync so listener shouldn't exist!");
         Call call = ok.getClient().newCall(this.build());
         Response temp = null;
         try {
@@ -149,13 +152,13 @@ public class RequestBuilderProxy extends Request.Builder {
     public Call executeSync() {
         Call call = ok.getClient().newCall(this.build());
         if(mOkHttpListener!=null)
-            MainHandlerUtils.onStart(mOkHttpListener);
+            MainHandlerUtils.onStart(mOkHttpListener,threadMode);
         call.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 if (mOkHttpListener != null) {
-                    MainHandlerUtils.onFailure(mOkHttpListener, call, e);
-                    MainHandlerUtils.onFinished(mOkHttpListener);
+                    MainHandlerUtils.onFailure(mOkHttpListener, call, e,threadMode);
+                    MainHandlerUtils.onFinished(mOkHttpListener,threadMode);
                 }
             }
 
@@ -165,18 +168,18 @@ public class RequestBuilderProxy extends Request.Builder {
                     if(requestParams.isDownLoad()){
                         if(mOkHttpListener instanceof com.zone.okhttp.callback.Callback.ProgressCallback)
                             DownLoadUtils.saveFile((com.zone.okhttp.callback.Callback.ProgressCallback)
-                                    mOkHttpListener,response,requestParams.getTarget());
+                                    mOkHttpListener,response,requestParams.getTarget(), threadMode);
                         else
-                            DownLoadUtils.saveFile(null,response,requestParams.getTarget());
+                            DownLoadUtils.saveFile(null,response,requestParams.getTarget(),threadMode);
 
                     }else{
                         String result = response.body().string();
-                        MainHandlerUtils.onResponse(mOkHttpListener, call, response, result);
+                        MainHandlerUtils.onResponse(mOkHttpListener, call, response, result,threadMode);
                     }
-                    MainHandlerUtils.onFinished(mOkHttpListener);
+                    MainHandlerUtils.onFinished(mOkHttpListener,threadMode);
                 }else
                     if(requestParams.isDownLoad())
-                        DownLoadUtils.saveFile(null,response,requestParams.getTarget());
+                        DownLoadUtils.saveFile(null,response,requestParams.getTarget(), threadMode);
             }
         });
         return call;
@@ -188,16 +191,40 @@ public class RequestBuilderProxy extends Request.Builder {
         return mOkHttpListener;
     }
 
-    public void setmOkHttpListener(com.zone.okhttp.callback.Callback.CommonCallback mOkHttpListener) {
+    public RequestBuilderProxy setmOkHttpListener(com.zone.okhttp.callback.Callback.CommonCallback mOkHttpListener) {
         this.mOkHttpListener = mOkHttpListener;
+        return this;
     }
 
     public RequestParams getRequestParams() {
         return requestParams;
     }
 
-    public void setRequestParams(RequestParams requestParams) {
+    public RequestBuilderProxy setRequestParams(RequestParams requestParams) {
         this.requestParams = requestParams;
+        return this;
     }
+
+    public ThreadMode getThreadMode() {
+        return threadMode;
+    }
+    /**
+     * only Onloading interface must be Main;
+     * other state  depend on ThreadMode state;
+     */
+    public RequestBuilderProxy backgroundThread() {
+        this.threadMode = ThreadMode.BACKGROUND;
+        return this;
+    }
+
+    /**
+     * only Onloading interface must be Main;
+     * other state  depend on ThreadMode state;
+     */
+    public RequestBuilderProxy mainThread() {
+        this.threadMode = ThreadMode.MAIN;
+        return this;
+    }
+
 
 }

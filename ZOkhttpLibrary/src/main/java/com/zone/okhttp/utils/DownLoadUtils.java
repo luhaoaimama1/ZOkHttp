@@ -1,6 +1,9 @@
 package com.zone.okhttp.utils;
 
 import com.zone.okhttp.callback.Callback;
+import com.zone.okhttp.entity.ThreadMode;
+import com.zone.okhttp.wrapper.RequestBuilderProxy;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -13,9 +16,9 @@ import okhttp3.Response;
 public class DownLoadUtils {
     static String urlPath="http://down.360safe.com/360/inst.exe";
 
-    public static void saveFile( Callback.ProgressCallback listener,Response response, File saveFile) throws IOException {
+    public static void saveFile(Callback.ProgressCallback listener, Response response, File saveFile, ThreadMode threadMode) throws IOException {
         if(response == null || !response.isSuccessful())
-             MainHandlerUtils.onFailure(listener, null, new IOException("response may be null or isnot successful~"));
+             MainHandlerUtils.onFailure(listener, null, new IOException("response may be null or isnot successful~"), threadMode);
         InputStream is = null;
         byte[] buf = new byte[2048];
         int len;

@@ -1,5 +1,7 @@
 package com.zone.zokhttptest;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -46,6 +48,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.bt_okPost:
                 ok.post(UrlPath, new RequestParams().put("platform", "android")
                         .put("name", "bug").put("subject", 123 + ""), okListener).tag(this).executeSync();
+                break;
+            case R.id.bt_okPost_Bg:
+                ok.get("http://www.baidu.com", okListener).tag(this)
+                        .backgroundThread()
+                        .tag(this).executeSync();
                 break;
             case R.id.bt_Https:
 //                ok.get("https://kyfw.12306.cn/otn/", okListener).tag(this).executeSync();
@@ -95,6 +102,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         @Override
         public void onSuccess(String result, Call call, Response response) {
             super.onSuccess(result, call, response);
+            System.out.println("current Thread Id:"+Thread.currentThread().getId());
+            Handler mHandler = new Handler(Looper.getMainLooper());
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    System.out.println("UI Thread Id:"+Thread.currentThread().getId());
+                }
+            });
             System.out.println("onSuccess result>>" + result);
             Gson g = new Gson();
             try {

@@ -9,7 +9,7 @@ a okhttp util
 
 ### Solved problems 
 - [x] Get, post (file JSON common post), put, delete, head, patch support 
-- [x] Callback listener is in the UI thread and the speed calculation 
+- [x] Callback listener is in the UI thread(or background thread) and the speed calculation 
 - [x] Files can be uploaded directly to the put file 
 - [x] Global request parameters can be set 
 - [x] support https
@@ -22,7 +22,7 @@ a okhttp util
 ### Jcenter
 gradle
 
-    compile 'com.zone:zokhttp:1.1.0'
+    compile 'com.zone:zokhttp:1.1.2'
 pom.xml
 
      <dependency>
@@ -70,7 +70,7 @@ pom.xml
 6.下载的例子  注意如果第二个是 文件夹  则target name 来自url 此例为inst.exe   如果第二个是文件 则target 为该文件
 
          ok.downLoad("http://down.360safe.com/360/inst.exe", FileUtils.getFile("DCIM", "Camera","360.exe"), okListener).tag(this).executeSync();
-        
+   
 ## Cookie(contain Session)(HongYang 's cookie Document)
 Current projects include: 
 
@@ -82,7 +82,12 @@ If you encounter problems, welcome feedback, of course, you can achieve their ow
 
 In addition, the persistence of cookie can also be used [https://github.com/franmontiel/PersistentCookieJar](https://github.com/franmontiel/PersistentCookieJar).
 
-
+#Change Log:
+version 1.1.1, add backgroundThread Mode; but onload callback all run main; other depend on setting;
+ 
+      ok.get("http://www.baidu.com", okListener).tag(this)
+                            .backgroundThread()
+                            .tag(this).executeSync();
 
 # Reference&Thanks：
 
