@@ -22,13 +22,13 @@ a okhttp util
 ### Jcenter
 gradle
 
-    compile 'com.zone:zokhttp:1.1.2'
+    compile 'com.zone:zokhttp:1.1.3'
 pom.xml
 
      <dependency>
      <groupId>com.zone</groupId>
      <artifactId>zokhttp</artifactId>
-     <version>1.1.0</version>
+     <version>1.1.3</version>
      <type>pom</type>
      </dependency>
     
@@ -83,7 +83,7 @@ If you encounter problems, welcome feedback, of course, you can achieve their ow
 In addition, the persistence of cookie can also be used [https://github.com/franmontiel/PersistentCookieJar](https://github.com/franmontiel/PersistentCookieJar).
 
 #Change Log:
-version 1.1.1, add backgroundThread Mode; but onload callback all run main; other depend on setting;
+version 1.1.3, add backgroundThread Mode; but onload callback all run main; other depend on setting;
  
       ok.get("http://www.baidu.com", okListener).tag(this)
                             .backgroundThread()

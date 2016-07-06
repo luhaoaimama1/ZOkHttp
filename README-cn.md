@@ -21,13 +21,13 @@
 ### Jcenter
 gradle
 
-    compile 'com.zone:zokhttp:1.1.2'
+    compile 'com.zone:zokhttp:1.1.3'
 pom.xml
 
      <dependency>
      <groupId>com.zone</groupId>
      <artifactId>zokhttp</artifactId>
-     <version>1.1.0</version>
+     <version>1.1.3</version>
      <type>pom</type>
      </dependency>
     
@@ -85,7 +85,7 @@ pom.xml
 相当于框架中只是提供了几个实现类，你可以自行定制或者选择使用。
 
 #更改日志:
-版本 1.1.1, 添加了 切换后台线程处理回调的模式 ;但是onload回调 一直都是主线程,其他回调则依靠你的模式设置;
+版本 1.1.3, 添加了 切换后台线程处理回调的模式 ;但是onload回调 一直都是主线程,其他回调则依靠你的模式设置;
 
       ok.get("http://www.baidu.com", okListener).tag(this)
                             .backgroundThread()
