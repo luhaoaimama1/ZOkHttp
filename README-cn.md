@@ -18,19 +18,21 @@
 
 # Usage
 
-### Jcenter
-gradle
 
-    compile 'com.zone:zokhttp:1.1.3'
-pom.xml
+### JicPack
+Add it in your root build.gradle at the end of repositories:
 
-     <dependency>
-     <groupId>com.zone</groupId>
-     <artifactId>zokhttp</artifactId>
-     <version>1.1.3</version>
-     <type>pom</type>
-     </dependency>
-    
+	allprojects {
+		repositories {
+			...
+			maven { url "https://jitpack.io" }
+		}
+	}
+Step 2. Add the dependency
+
+	dependencies {
+    	      compile 'com.github.luhaoaimama1:ZOkHttp:1.1.4'
+    	}
     
 # Easy use:
 1.get
