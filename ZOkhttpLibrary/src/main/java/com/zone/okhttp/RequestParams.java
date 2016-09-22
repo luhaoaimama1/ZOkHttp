@@ -36,9 +36,8 @@ public class RequestParams {
         //Finally put the head
         setHeaderReplaceMap(ok.getHttpConfig().getCommonHeaderReplaceMap());
         if (StringUtils.isEmptyTrim(encoding))
-            headsReplace("charset", ok.getHttpConfig().getEncoding());
-        else
-            headsReplace("charset", encoding);
+            encoding = ok.getHttpConfig().getEncoding();
+        headsReplace("charset", encoding);
     }
 
 
@@ -46,8 +45,9 @@ public class RequestParams {
         return jsonStr;
     }
 
-    public void setJsonStr(String jsonStr) {
+    public RequestParams setJsonStr(String jsonStr) {
         this.jsonStr = jsonStr;
+        return this;
     }
 
     private void file2NameMapChecked() {
@@ -198,7 +198,8 @@ public class RequestParams {
         return isPostJson;
     }
 
-    protected void setPostJson(boolean postJson) {
+    protected RequestParams setPostJson(boolean postJson) {
         isPostJson = postJson;
+        return this;
     }
 }

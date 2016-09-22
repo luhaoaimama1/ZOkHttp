@@ -49,6 +49,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 ok.post(UrlPath, new RequestParams().put("platform", "android")
                         .put("name", "bug").put("subject", 123 + ""), okListener).tag(this).executeSync();
                 break;
+            case R.id.json:
+                String urlTest = "http://dev.shenxian.com:80/account-app/user/create.json";
+                ok.postJson(urlTest,
+                        new RequestParams().setJsonStr("{\"id\":\"11\",\"token\":\"22\"}"), okListener)
+                        .tag(this).executeSync();
+                ok.post(urlTest, new RequestParams().put("id", "11")
+                        .put("token", "22"), okListener).tag(this).executeSync();
+                break;
             case R.id.bt_okPost_Bg:
                 ok.get("http://www.baidu.com", okListener).tag(this)
                         .backgroundThread()

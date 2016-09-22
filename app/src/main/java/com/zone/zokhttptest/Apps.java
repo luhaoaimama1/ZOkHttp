@@ -19,6 +19,9 @@ import android.annotation.TargetApi;
 import android.app.Application;
 import android.os.Build;
 import android.os.StrictMode;
+
+import com.facebook.stetho.Stetho;
+import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.zone.okhttp.HttpConfig;
 import com.zone.okhttp.cookie.CookieJarImpl;
 import com.zone.okhttp.cookie.store.PersistentCookieStore;
@@ -70,6 +73,8 @@ public class Apps extends Application {
         Map<String, String> commonHeaderReMap = new HashMap<>();
         commonHeaderReMap.put("commonHeaderMap", "header_CommonReplace");
         CookieJarImpl cookieJar = new CookieJarImpl(new PersistentCookieStore(getApplicationContext()));
+
+        Stetho.initializeWithDefaults(this);
 //		try {
         ok.initConfig(new HttpConfig().setCommonHeaderAddMap(commonHeaderMap)
                         .setCommonHeaderReplaceMap(commonHeaderReMap).setCommonParamsMap(commonParamMap)
@@ -89,6 +94,7 @@ public class Apps extends Application {
                         .cookieJar(cookieJar)//cookieJar
 //                      .hostnameVerifier(new SkirtHttpsHostnameVerifier())//https跳过检测
                         .Certificates(CER_12306)
+                        .addNetworkInterceptor(new StethoInterceptor())
 //					    .Certificates(getAssets().open("srca.cer")
         );
 
