@@ -224,7 +224,7 @@ public class ok {//At that time z.ok () is the network to learn xutils I feel I 
                         request.url(urlString).post(createRequestBody(requestParams, listener));
                     else{
                         //json
-                        MediaType MEDIA_TYPE_PLAIN = MediaType.parse("text/plain;charset=" + requestParams.getEncoding());
+                        MediaType MEDIA_TYPE_PLAIN = MediaType.parse("application/json;charset=" + requestParams.getEncoding());
                         request.url(urlString).post(RequestBody.create(MEDIA_TYPE_PLAIN, requestParams.getJsonStr()));
                     }
                     break;

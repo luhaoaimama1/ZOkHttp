@@ -43,19 +43,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.bt_okGet:
                 //创建okHttpClient对象
 //				OkHttpUtils.get(UrlPath + "?un=8&kb=ga").executeSync(okListener);
-                ok.get("http://www.baidu.com", okListener).tag(this).executeSync();
+                ok.get("http://www.baidu.com", new RequestParams().put("platform", "android")
+                        .put("name", "bug"), okListener).tag(this).executeSync();
                 break;
             case R.id.bt_okPost:
                 ok.post(UrlPath, new RequestParams().put("platform", "android")
                         .put("name", "bug").put("subject", 123 + ""), okListener).tag(this).executeSync();
+//                ok.post("http://www.baidu.com",
+//                        new RequestParams().put("platform", "android")
+//                        .put("name", "bug").put("subject", 123 + ""), okListener).tag(this).executeSync();
                 break;
             case R.id.json:
                 String urlTest = "http://dev.shenxian.com:80/account-app/user/create.json";
-                ok.postJson(urlTest,
-                        new RequestParams().setJsonStr("{\"id\":\"11\",\"token\":\"22\"}"), okListener)
-                        .tag(this).executeSync();
-                ok.post(urlTest, new RequestParams().put("id", "11")
-                        .put("token", "22"), okListener).tag(this).executeSync();
+                System.out.println("json_>" + new Gson().toJson(new User2(new User("11", "22"))));
+                ok.postJson(urlTest,new RequestParams()
+                         .setJsonStr(new Gson().toJson(new User2(new User("11", "22")))),
+                        okListener).tag(this).executeSync();
+
+                ok.post(urlTest, new RequestParams()
+                        .put("user", new Gson().toJson(new User("11", "22"))), okListener).tag(this).executeSync();
                 break;
             case R.id.bt_okPost_Bg:
                 ok.get("http://www.baidu.com", okListener).tag(this)
@@ -76,18 +82,36 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         .put("mFile", f).put("subject", "1327.jpg", f2), okListener).tag(this).executeSync();
                 break;
             case R.id.bt_downLoad:
-                ok.downLoad("http://down.360safe.com/360/inst.exe", FileUtils.getFile("","360.exe"), okListener).tag(this).executeSync();
+                ok.downLoad("http://down.360safe.com/360/inst.exe", FileUtils.getFile("", "360.exe"), okListener).tag(this).executeSync();
                 break;
             default:
                 break;
         }
     }
 
+    private class User {
+        private String id;
+        private String token;
+
+        public User(String id, String token) {
+            this.id = id;
+            this.token = token;
+        }
+    }
+
+    private class User2 {
+        public User user;
+
+        public User2(User user) {
+            this.user = user;
+        }
+    }
+
     public void delete(File b) {
         if (b.exists()) {
-            System.out.println("path:"+b.getAbsolutePath()+"删除成功："+b.delete());
-        }else{
-            System.out.println("path:"+b.getAbsolutePath()+"不存在~");
+            System.out.println("path:" + b.getAbsolutePath() + "删除成功：" + b.delete());
+        } else {
+            System.out.println("path:" + b.getAbsolutePath() + "不存在~");
         }
     }
 
@@ -110,12 +134,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         @Override
         public void onSuccess(String result, Call call, Response response) {
             super.onSuccess(result, call, response);
-            System.out.println("current Thread Id:"+Thread.currentThread().getId());
+            System.out.println("current Thread Id:" + Thread.currentThread().getId());
             Handler mHandler = new Handler(Looper.getMainLooper());
             mHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    System.out.println("UI Thread Id:"+Thread.currentThread().getId());
+                    System.out.println("UI Thread Id:" + Thread.currentThread().getId());
                 }
             });
             System.out.println("onSuccess result>>" + result);
