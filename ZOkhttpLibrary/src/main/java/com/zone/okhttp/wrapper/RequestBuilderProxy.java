@@ -216,6 +216,14 @@ public class RequestBuilderProxy extends Request.Builder {
         this.threadMode = ThreadMode.BACKGROUND;
         return this;
     }
+    /**
+     * only Onloading interface must be Main;
+     * other state  depend on ThreadMode state;
+     */
+    public RequestBuilderProxy background_SERIAL_Thread() {
+        this.threadMode = ThreadMode.SERIAL_BACKGROUND;
+        return this;
+    }
 
     /**
      * only Onloading interface must be Main;
